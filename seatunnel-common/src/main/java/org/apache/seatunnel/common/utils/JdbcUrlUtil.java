@@ -23,13 +23,19 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Optional;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static org.apache.seatunnel.common.utils.NetworkUtils.getAvailableHosts;
 
 public final class JdbcUrlUtil {
     private static final Pattern URL_PATTERN =
             Pattern.compile(
-                    "^(?<url>jdbc:.+?//(?<host>.+?):(?<port>\\d+?))(/(?<database>.*?))*(?<suffix>\\?.*)*$");
+                    "^(?<url>jdbc:.+?//"
+                            + "(?<hosts>(?:[^,]+:\\d+)(?:,[^,]+:\\d+)*))"
+                            + "(/(?<database>.*?))*"
+                            + "(?<suffix>\\?.*)*$");
 
     private JdbcUrlUtil() {}
 
@@ -37,12 +43,12 @@ public final class JdbcUrlUtil {
         Matcher matcher = URL_PATTERN.matcher(url);
         if (matcher.find()) {
             String urlWithoutDatabase = matcher.group("url");
+            String[] hosts= matcher.group("hosts").split(",");
             String database = matcher.group("database");
             return new JdbcUrlUtil.UrlInfo(
                     url,
                     urlWithoutDatabase,
-                    matcher.group("host"),
-                    Integer.valueOf(matcher.group("port")),
+                    hosts,
                     database,
                     matcher.group("suffix"));
         }
@@ -54,6 +60,7 @@ public final class JdbcUrlUtil {
         private static final long serialVersionUID = 1L;
         private final String origin;
         private final String urlWithoutDatabase;
+        private final String[] hosts;
         private final String host;
         private final Integer port;
         private final String suffix;
@@ -62,14 +69,16 @@ public final class JdbcUrlUtil {
         public UrlInfo(
                 String origin,
                 String urlWithoutDatabase,
-                String host,
-                Integer port,
+                String[] hosts,
                 String defaultDatabase,
                 String suffix) {
             this.origin = origin;
             this.urlWithoutDatabase = urlWithoutDatabase;
-            this.host = host;
-            this.port = port;
+            this.hosts = hosts;
+            String[] availableHosts=getAvailableHosts(hosts);
+            String randomHost=getRandomHost(availableHosts);
+            this.host=randomHost.split(":")[0];
+            this.port = Integer.valueOf(randomHost.split(":")[1]);
             this.defaultDatabase = defaultDatabase;
             this.suffix = suffix == null ? "" : suffix;
         }
@@ -88,6 +97,11 @@ public final class JdbcUrlUtil {
 
         public String getUrlWithDatabase(String database) {
             return urlWithoutDatabase + "/" + database + suffix;
+        }
+
+        public String getRandomHost(String[] originHosts){
+            int randomIndex= new Random().nextInt(originHosts.length);
+            return originHosts[randomIndex];
         }
     }
 }
