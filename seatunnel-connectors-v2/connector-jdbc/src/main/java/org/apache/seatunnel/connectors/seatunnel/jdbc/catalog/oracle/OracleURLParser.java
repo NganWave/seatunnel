@@ -36,8 +36,9 @@ public class OracleURLParser {
             Integer port = Integer.valueOf(matcher.group("port"));
             String database = matcher.group("database");
             String suffix = Optional.ofNullable(matcher.group("suffix")).orElse("");
-            return new JdbcUrlUtil.UrlInfo(url, urlWithoutDatabase, host, port, database, suffix);
+            return new JdbcUrlUtil.UrlInfo(
+                    url, urlWithoutDatabase, new String[] {host + ":" + port}, database, suffix);
         }
-        return new JdbcUrlUtil.UrlInfo(url, url, null, null, "temp", null);
+        return new JdbcUrlUtil.UrlInfo(url, url, new String[] {""}, null, "temp");
     }
 }

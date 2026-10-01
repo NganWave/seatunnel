@@ -59,7 +59,11 @@ class AbstractJdbcCatalogTest {
                     "user",
                     "password",
                     new JdbcUrlUtil.UrlInfo(
-                            "jdbc:test:default", "jdbc:test:", "localhost", 0, "default", null),
+                            "jdbc:test:default",
+                            "jdbc:test:",
+                            new String[] {"localhost:0"},
+                            "default",
+                            null),
                     null,
                     null);
         }

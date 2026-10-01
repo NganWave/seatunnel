@@ -35,8 +35,9 @@ public class SapHanaURLParser {
             String host = matcher.group("host");
             Integer port = Integer.valueOf(matcher.group("port"));
             String params = matcher.group("params");
-            return new JdbcUrlUtil.UrlInfo(url, urlWithoutDatabase, host, port, "SYSTEM", params);
+            return new JdbcUrlUtil.UrlInfo(
+                    url, urlWithoutDatabase, new String[] {host + ":" + port}, "SYSTEM", params);
         }
-        return new JdbcUrlUtil.UrlInfo(url, url, null, null, "SYSTEM", null);
+        return new JdbcUrlUtil.UrlInfo(url, url, new String[] {""}, null, "SYSTEM");
     }
 }
