@@ -110,11 +110,15 @@ public class SqlServerURLParser {
         } else {
             port = DEFAULT_PORT;
             urlWithoutDatabase =
-                    String.format("jdbc:sqlserver://%s:%s", serverName, port) + ";" + suffix;
+                    String.format("jdbc:sqlserver://%s:%s", serverName + ":" + port) + ";" + suffix;
         }
 
         return new JdbcUrlUtil.UrlInfo(
-                url, urlWithoutDatabase, serverName, port, dbInstance, suffix);
+                url,
+                urlWithoutDatabase,
+                new String[] {serverName + ":" + port},
+                dbInstance,
+                suffix);
     }
 
     private static Map<String, String> parseQueryParams(String query, String separator) {

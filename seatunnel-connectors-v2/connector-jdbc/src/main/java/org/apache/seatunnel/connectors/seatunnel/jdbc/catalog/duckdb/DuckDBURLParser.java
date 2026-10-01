@@ -42,6 +42,7 @@ public class DuckDBURLParser {
         }
         String path = Optional.ofNullable(matcher.group("path")).orElse("");
         String suffix = Optional.ofNullable(matcher.group("suffix")).orElse("");
-        return new JdbcUrlUtil.UrlInfo(url, "jdbc:duckdb:", "localhost", 0, path, suffix);
+        return new JdbcUrlUtil.UrlInfo(
+                url, "jdbc:duckdb:", new String[] {"localhost:0"}, path, suffix);
     }
 }
