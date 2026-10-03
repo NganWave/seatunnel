@@ -23,11 +23,8 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Optional;
-import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static org.apache.seatunnel.common.utils.NetworkUtils.getAvailableHosts;
 
 public final class JdbcUrlUtil {
     private static final Pattern URL_PATTERN =
@@ -71,7 +68,7 @@ public final class JdbcUrlUtil {
             this.origin = origin;
             this.urlWithoutDatabase = urlWithoutDatabase;
             this.hosts = hosts;
-//            String[] availableHosts = getAvailableHosts(hosts);
+            //            String[] availableHosts = getAvailableHosts(hosts);
             String randomHost = getRandomHost(hosts);
             this.host = randomHost.split(":")[0];
             this.port = Integer.valueOf(randomHost.split(":")[1]);
@@ -96,7 +93,7 @@ public final class JdbcUrlUtil {
         }
 
         public String getRandomHost(String[] originHosts) {
-//            int randomIndex = new Random().nextInt(originHosts.length+1);
+            //            int randomIndex = new Random().nextInt(originHosts.length+1);
             int num = (int) (Math.random() * originHosts.length);
             return originHosts[num];
         }
