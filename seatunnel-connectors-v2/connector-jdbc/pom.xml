@@ -267,6 +267,10 @@
             <groupId>org.apache.seatunnel</groupId>
             <artifactId>seatunnel-shade-hikari</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.seatunnel</groupId>
+            <artifactId>seatunnel-shade-hadoop3-uber</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>mysql</groupId>
