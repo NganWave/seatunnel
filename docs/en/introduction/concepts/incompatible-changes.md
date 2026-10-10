@@ -52,7 +52,7 @@ The Zeta SQL ARRAY function now declares TINYINT elements as `ARRAY<TINYINT>`, m
 - **Unbalanced `{}` or `[]` are partially parsed into maps and lists**
 
   - In `-i k=[a,b],c]`, `[a,b]` is parsed as an array, and `c]` is ignored because it has no = (it is not kept as a string).
-  - Balanced values that start with `{` or `[` but are not valid JSON now fail with a `BadValue` error at parse time. This includes previously working unquoted values such as `-i pattern={a,b}`. To keep them as plain strings, wrap the value in escaped double quotes:
+  - Balanced values that start with `{` or `[` but are not valid HOCON/JSON now fail with a `BadValue` error at parse time. This includes previously working unquoted values such as `-i pattern={a,b}`. To keep them as plain strings, wrap the value in escaped double quotes:
     `-i pattern=\"{a,b}\"`
 
 - **`-i` keys and values are now trimmed, and empty keys are rejected**
