@@ -40,9 +40,9 @@ public class DuckDBURLParser {
         if (!matcher.matches()) {
             throw new IllegalArgumentException("Invalid DuckDB JDBC url: " + url);
         }
+        String[] hosts = {"localhost:0"};
         String path = Optional.ofNullable(matcher.group("path")).orElse("");
         String suffix = Optional.ofNullable(matcher.group("suffix")).orElse("");
-        return new JdbcUrlUtil.UrlInfo(
-                url, "jdbc:duckdb:", new String[] {"localhost:0"}, path, suffix);
+        return new JdbcUrlUtil.UrlInfo(url, "jdbc:duckdb:", hosts, path, suffix);
     }
 }

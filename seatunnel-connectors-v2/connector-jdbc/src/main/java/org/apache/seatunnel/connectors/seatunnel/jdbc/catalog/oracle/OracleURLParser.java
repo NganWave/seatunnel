@@ -33,11 +33,11 @@ public class OracleURLParser {
         if (matcher.find()) {
             String urlWithoutDatabase = matcher.group("url");
             String host = matcher.group("host");
-            Integer port = Integer.valueOf(matcher.group("port"));
+            int port = Integer.parseInt(matcher.group("port"));
+            String[] hosts = {host + ":" + port};
             String database = matcher.group("database");
             String suffix = Optional.ofNullable(matcher.group("suffix")).orElse("");
-            return new JdbcUrlUtil.UrlInfo(
-                    url, urlWithoutDatabase, new String[] {host + ":" + port}, database, suffix);
+            return new JdbcUrlUtil.UrlInfo(url, urlWithoutDatabase, hosts, database, suffix);
         }
         return new JdbcUrlUtil.UrlInfo(url, url, new String[] {""}, null, "temp");
     }

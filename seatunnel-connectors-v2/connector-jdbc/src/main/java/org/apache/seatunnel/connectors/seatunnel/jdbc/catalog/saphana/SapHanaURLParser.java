@@ -33,10 +33,10 @@ public class SapHanaURLParser {
         if (matcher.find()) {
             String urlWithoutDatabase = matcher.group("url");
             String host = matcher.group("host");
-            Integer port = Integer.valueOf(matcher.group("port"));
+            int port = Integer.parseInt(matcher.group("port"));
+            String[] hosts = {host + ":" + port};
             String params = matcher.group("params");
-            return new JdbcUrlUtil.UrlInfo(
-                    url, urlWithoutDatabase, new String[] {host + ":" + port}, "SYSTEM", params);
+            return new JdbcUrlUtil.UrlInfo(url, urlWithoutDatabase, hosts, "SYSTEM", params);
         }
         return new JdbcUrlUtil.UrlInfo(url, url, new String[] {""}, null, "SYSTEM");
     }
